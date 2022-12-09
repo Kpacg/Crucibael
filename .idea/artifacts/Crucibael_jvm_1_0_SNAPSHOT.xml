@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Crucibael-jvm-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/build/libs</output-path>
+    <root id="archive" name="Crucibael-jvm-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="Crucibael.jvmMain" />
+    </root>
+  </artifact>
+</component>
