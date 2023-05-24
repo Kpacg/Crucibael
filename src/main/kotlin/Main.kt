@@ -1,7 +1,8 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
-
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main()
+{
+    println("Privet!")
+    var Me = Player("Гриша", 1, 1500)
+    var Julia = Player("Julia", 2, 1600)
+    Me.resfreshRating(Julia, 20)
+    println(Me.playerELO)
 }
