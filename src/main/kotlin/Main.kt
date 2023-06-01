@@ -1,4 +1,5 @@
-import java.util.Dictionary
+import java.util.*
+import kotlin.concurrent.schedule
 
 fun main()
 {
@@ -9,4 +10,9 @@ fun main()
     var Julia = Player("Julia", 2, 1500)
     Me.resfreshRating(Julia, 20)
     println(Me.playerELO)*/
+    var t = CountDownTimer(0,0,5)
+    t.start()
+    Timer().schedule(3000L) {
+        t.stop()
+    }
 }
