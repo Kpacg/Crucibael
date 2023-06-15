@@ -1,0 +1,22 @@
+<configuration scan="true" scanPeriod="1 minutes">
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>#%.-1level %d{HH:mm:ss} %logger{36} %msg%n</pattern>
+    </encoder>
+</appender>
+<appender name="STDOUT-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT"/>
+    <queueSize>8192</queueSize>
+    <discardingThreshold>2048</discardingThreshold>
+    <neverBlock>true</neverBlock>
+</appender>
+
+<shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook">
+    <delay>3000</delay><!-- in milliseconds -->
+</shutdownHook>
+
+<root level="DEBUG">
+    <appender-ref ref="STDOUT-ASYNC"/>
+</root>
+
+</configuration>
