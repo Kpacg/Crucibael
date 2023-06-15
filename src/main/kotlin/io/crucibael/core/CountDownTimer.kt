@@ -1,3 +1,5 @@
+package io.crucibael.core
+
 import java.util.*
 import kotlin.concurrent.schedule
 class CountDownTimer(private var hours:Int = 0, private var minutes: Int = 0, private var seconds: Int = 0) {

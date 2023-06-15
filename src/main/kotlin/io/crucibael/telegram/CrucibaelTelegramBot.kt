@@ -1,5 +1,8 @@
+package io.crucibael.telegram
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.methods.updates.GetUpdates
 import org.telegram.telegrambots.meta.api.objects.Update
 
 class CrucibaelTelegramBot (var botTokenName:String): TelegramLongPollingBot(botTokenName) {
@@ -16,7 +19,9 @@ class CrucibaelTelegramBot (var botTokenName:String): TelegramLongPollingBot(bot
             {
                 val chatid = message.chatId
                 val text = message.text
-
+                when(text){
+                    "START" -> sendMessage(chatid, "PRIVET")
+                }
             }
         }
     }

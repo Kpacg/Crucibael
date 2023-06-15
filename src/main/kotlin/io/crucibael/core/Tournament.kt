@@ -1,3 +1,5 @@
+package io.crucibael.core
+
 import java.util.Date
 
 //tournament -> rounds -> meets
@@ -27,9 +29,9 @@ data class Round (val roundNumber:Int)
 {
     var pairs = mutableListOf<Meet>()
 }
-data class Meet (val player1:Player, val player2:Player, var result:Int = 10)
+data class Meet (val player1: Player, val player2: Player, var result:Int = 10)
 {
-    fun isEqual(otherMeet:Meet):Boolean =
+    fun isEqual(otherMeet: Meet):Boolean =
         ((player1 == otherMeet.player2) && (player2 == otherMeet.player1)) || ((player1 == otherMeet.player1) && (player2 == otherMeet.player2))
 }
 data class Team(var teamName: String, var teamCity : String) {
