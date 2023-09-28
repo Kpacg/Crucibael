@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 
 class HttpPostSender {
-    private val logger = KotlinLogging.logger {"Hi"}
+    private val logger = KotlinLogging.logger {}
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(3, TimeUnit.SECONDS)

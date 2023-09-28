@@ -14,7 +14,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 fun main()
 {
-    val botToken = "6052489295:AAFXxjN45OQ16krJ8JuM2BWhX6o0i8F4qWE"
     //Table -> Dictionary Team, Score/Rating -> Dictionary Team1 vs Team2 -> Table
     /*
     var Me = Player("Гриша", 1, 2500)
@@ -26,22 +25,24 @@ fun main()
     Timer().schedule(3000L) {
         t.stop()
     }
-    val myBot = CrucibaelTelegramBot(botToken)
+
     val telegramBotsApi = TelegramBotsApi(DefaultBotSession::class.java)
     telegramBotsApi.registerBot(myBot)*/
 
+    val myBot = CrucibaelTelegramBot(botToken)
     val client = OkHttpClient()
 
     val mediaType = "application/json".toMediaTypeOrNull()
-    var body = "{\"url\":\"Empty\"}".toRequestBody(mediaType)
+    var body = "{}".toRequestBody(mediaType)
     var request = Request.Builder()
         .url("https://api.telegram.org/bot6052489295%3AAAFXxjN45OQ16krJ8JuM2BWhX6o0i8F4qWE/getMe")
         .post(body)
         .addHeader("accept", "application/json")
         .build()
     var response = client.newCall(request).execute()
+    println(response.code)
 
-
+    //var HellStorm = Tournament("HellStorm", 4, "Saint-Petersburg", Date(2015, 12, 12),true)
     /*body = "{\"offset\":null,\"limit\":1,\"timeout\":0}".toRequestBody(mediaType)
     request = Request.Builder()
         .url("https://api.telegram.org/bot6052489295%3AAAFXxjN45OQ16krJ8JuM2BWhX6o0i8F4qWE/getUpdates")
