@@ -5,13 +5,14 @@ import java.time.LocalDate
 import kotlin.math.roundToInt
 
 //tournament -> rounds -> meets
-data class Tournament (val tournamentName: String, val numberOfRounds: Int, val location: String, val eventDay: LocalDate,
-                       val teamTournament:Boolean = true)
+data class Tournament (val tournamentName: String, val numberOfRounds: Int, val location: String,
+                       val eventDay: LocalDate, val teamTournament:Boolean = true)
 {
     private var tournamentParticipants = mutableListOf<Player>() //Список участников турнира
     private var tournamentRounds = arrayListOf<Round>() //Список раундов турнира
     private var currentRoundNumber = 0 //Номер текущего раунда
-
+    private var averageElo = 0 //Средний рейтинг игроков на турнире
+    private var currentRound: Round = Round(1)
     fun addPlayer(candidate:Player){
         if(currentRoundNumber > 0 || LocalDate.now() > eventDay)
             throw Exception("Турнир $tournamentName уже начался!")
@@ -20,11 +21,28 @@ data class Tournament (val tournamentName: String, val numberOfRounds: Int, val 
         else
             throw Exception("Игрок ${candidate.playerName} уже участвует в турнире!")
     }
+
+    fun addPlayer(candidateID:Int)
+    {
+        // TODO:
+    }
+    fun removePlayer(candidate: Player)
+    {
+        if( !tournamentParticipants.remove(candidate))
+            throw Exception("In $tournamentName there is no player ${candidate.playerName}!")
+    }
+
+    fun removePlayer(candidateID : Int)
+    {
+        val playerToRemove = tournamentParticipants.find { it.playerID  == candidateID}
+        if( playerToRemove == null)
+            throw Exception("In $tournamentName there is no player with $candidateID!")
+        else
+            tournamentParticipants.remove(playerToRemove)
+    }
     fun start():Boolean {
         //1. Создать экземпляр первого раунда
-        val firstRound = Round(1)
-        tournamentRounds.add(firstRound)
-        var averageElo = 0
+        tournamentRounds.add(currentRound)
         var averageEloSum:Double = 0.0
         for(participant in tournamentParticipants)
             averageEloSum += (participant.playerELO/tournamentParticipants.count()).toDouble()
@@ -52,7 +70,7 @@ data class Tournament (val tournamentName: String, val numberOfRounds: Int, val 
         if(currentRoundNumber >= numberOfRounds)
             return false
         //1. Создать экземпляр очередного раунда
-        var currentRound = Round(currentRoundNumber)
+        currentRound = Round(currentRoundNumber)
         //2. Обновить результаты игроков в соответствии с полученными данными
         for(participant in tournamentParticipants) {
             var previousRoundMeet = tournamentRounds[currentRoundNumber - 1].pairs.find {
