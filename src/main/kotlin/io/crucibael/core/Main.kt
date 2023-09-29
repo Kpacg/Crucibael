@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.time.LocalDate
 
 fun main()
 {
@@ -27,7 +28,7 @@ fun main()
     }
 
     val telegramBotsApi = TelegramBotsApi(DefaultBotSession::class.java)
-    telegramBotsApi.registerBot(myBot)*/
+    telegramBotsApi.registerBot(myBot)
 
     val myBot = CrucibaelTelegramBot(botToken)
     val client = OkHttpClient()
@@ -41,7 +42,7 @@ fun main()
         .build()
     var response = client.newCall(request).execute()
     println(response.code)
-
+*/
     //var HellStorm = Tournament("HellStorm", 4, "Saint-Petersburg", Date(2015, 12, 12),true)
     /*body = "{\"offset\":null,\"limit\":1,\"timeout\":0}".toRequestBody(mediaType)
     request = Request.Builder()
@@ -65,4 +66,16 @@ fun main()
 
         }
     } */
+    val testTournament = Tournament("TEST TOURNAMENT", 5, "Moscow",
+        LocalDate.parse("2023-12-12"),false)
+
+    var Alaska = Player("Alaska", "Thousand Sons", 1, 2020 )
+    var Ares = Player("Ares", "Drukhari", 2, 1902)
+
+    testTournament.addPlayer(Ares)
+    testTournament.addPlayer(Alaska)
+
+    testTournament.start()
+    testTournament.nextRound()
+
 }

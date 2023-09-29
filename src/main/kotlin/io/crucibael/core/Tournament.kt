@@ -1,16 +1,25 @@
 package io.crucibael.core
 
 import java.lang.Exception
-import java.util.Date
+import java.time.LocalDate
 import kotlin.math.roundToInt
 
 //tournament -> rounds -> meets
-data class Tournament (val tournamentName: String, val numberOfRounds: Int, val location: String, val eventDay: Date,
+data class Tournament (val tournamentName: String, val numberOfRounds: Int, val location: String, val eventDay: LocalDate,
                        val teamTournament:Boolean = true)
 {
     private var tournamentParticipants = mutableListOf<Player>() //Список участников турнира
-    private var tournamentRounds = arrayListOf<Round>()
-    private var currentRound = 0
+    private var tournamentRounds = arrayListOf<Round>() //Список раундов турнира
+    private var currentRoundNumber = 0 //Номер текущего раунда
+
+    fun addPlayer(candidate:Player){
+        if(currentRoundNumber > 0 || LocalDate.now() > eventDay)
+            throw Exception("Турнир $tournamentName уже начался!")
+        if(!tournamentParticipants.contains(candidate))
+            tournamentParticipants.add(candidate)
+        else
+            throw Exception("Игрок ${candidate.playerName} уже участвует в турнире!")
+    }
     fun start():Boolean {
         //1. Создать экземпляр первого раунда
         val firstRound = Round(1)
@@ -27,7 +36,7 @@ data class Tournament (val tournamentName: String, val numberOfRounds: Int, val 
         val highElo = mutableListOf<Player>()
         tournamentParticipants.sortBy {it.playerELO}
         for(participant in tournamentParticipants)
-            if(tournamentParticipants.indexOf(participant) <= tournamentParticipants.count()/2)
+            if(tournamentParticipants.indexOf(participant) + 1 <= tournamentParticipants.count()/2)
                 lowElo.add(participant)
             else
                 highElo.add(participant)
@@ -39,14 +48,14 @@ data class Tournament (val tournamentName: String, val numberOfRounds: Int, val 
 
     fun nextRound():Boolean
     {
-        currentRound++
-        if(currentRound >= numberOfRounds)
+        currentRoundNumber++
+        if(currentRoundNumber >= numberOfRounds)
             return false
         //1. Создать экземпляр очередного раунда
-        var nextRound = Round(currentRound)
+        var currentRound = Round(currentRoundNumber)
         //2. Обновить результаты игроков в соответствии с полученными данными
         for(participant in tournamentParticipants) {
-            var previousRoundMeet = tournamentRounds[currentRound - 1].pairs.find {
+            var previousRoundMeet = tournamentRounds[currentRoundNumber - 1].pairs.find {
                 it.player1.playerName == participant.playerName ||
                         it.player2.playerName == participant.playerName
             }
@@ -60,7 +69,35 @@ data class Tournament (val tournamentName: String, val numberOfRounds: Int, val 
         //2. Разбить игроков из списка tournamentParticipants на пары по результатам предыдущего раунда
         tournamentParticipants.sortWith(compareBy<Player> {it.playerResult}.thenBy { it.playerPath })
 
-        return TODO("Provide the return value")
+        var tournamentParticipantsClone: MutableList<Player> = mutableListOf()
+        tournamentParticipantsClone.addAll(tournamentParticipants)
+
+        var index = 1
+        while(tournamentParticipantsClone.isNotEmpty())
+        {
+            if(index - 1 > tournamentParticipantsClone.count())
+                throw Exception("Incorrect pairs in round $currentRoundNumber!")
+
+            val currentMeet = Meet(tournamentParticipantsClone[0], tournamentParticipantsClone[index])
+            var isOk = true
+            for(round in tournamentRounds)
+            {
+                if(round.pairs.find { it.isEqual(currentMeet) } != null)
+                {
+                    isOk = false
+                    index++
+                    break
+                }
+            }
+            if(isOk)
+            {
+                currentRound.pairs.add(currentMeet)
+                tournamentParticipantsClone.removeAt(0)
+                tournamentParticipantsClone.removeAt(index)
+                index = 1;
+            }
+        }
+        return true
     }
 }
 
@@ -68,12 +105,14 @@ data class Round (val roundNumber:Int)
 {
     var pairs = mutableListOf<Meet>()
 }
+
 data class Meet (val player1: Player, val player2: Player, var result1:Int = 0, var result2:Int = 0)
 {
     fun isEqual(otherMeet: Meet):Boolean =
-        ((player1 == otherMeet.player2) && (player2 == otherMeet.player1)) ||
-                ((player1 == otherMeet.player1) && (player2 == otherMeet.player2))
+        ((player1.playerID == otherMeet.player2.playerID) && (player2.playerID == otherMeet.player1.playerID)) ||
+                ((player1.playerID == otherMeet.player1.playerID) && (player2.playerID == otherMeet.player2.playerID))
 }
+
 data class Team(var teamName: String, var teamCity : String) {
     private var teamPlayers = mutableListOf<Player>()
     //var teamCaptain: Player
@@ -85,6 +124,7 @@ data class Team(var teamName: String, var teamCity : String) {
         return teamPlayers.remove(player)
     }
 }
+
 data class Player(val playerName: String, val playerFaction:String, val playerID: Int, var playerELO: Int = 1500){
     private val playerCoefficient = 2.0
     var playerResult = 0

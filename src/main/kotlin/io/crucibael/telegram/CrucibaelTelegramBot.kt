@@ -31,7 +31,7 @@ class CrucibaelTelegramBot (var botTokenName:String): TelegramLongPollingBot(bot
             }
         }
     }
-    fun GetUpdates(): List<Update>{
+    /*fun GetUpdates(): List<Update>{
         val client = OkHttpClient()
 
         val mediaType = "application/json".toMediaTypeOrNull()
@@ -45,8 +45,8 @@ class CrucibaelTelegramBot (var botTokenName:String): TelegramLongPollingBot(bot
             .build()
 
         val response = client.newCall(request).execute()
-
-    }
+        return  response.
+    }*/
     fun sendMessage(chatId: Long, text:String)
     {
         val message = SendMessage(chatId.toString(), text)
