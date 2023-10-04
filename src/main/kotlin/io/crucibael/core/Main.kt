@@ -75,7 +75,7 @@ fun main()
     testTournament.addPlayer(Ares)
     testTournament.addPlayer(Alaska)
 
-    testTournament.start()
-    testTournament.nextRound()
+    //testTournament.start()
+    //testTournament.nextRound()
 
 }
