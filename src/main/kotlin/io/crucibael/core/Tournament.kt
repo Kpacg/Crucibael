@@ -1,13 +1,13 @@
 package io.crucibael.core
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
 data class Tournament(
     val tournamentName: String,
     val numberOfRounds: Int,
     val location: String,
-    val eventDay: LocalDate,
+    val eventDay: LocalDateTime,
     val teamTournament: Boolean = true
 )
 {

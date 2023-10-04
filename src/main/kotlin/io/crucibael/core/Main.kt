@@ -12,6 +12,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 fun main()
 {
@@ -67,7 +68,7 @@ fun main()
         }
     } */
     val testTournament = Tournament("TEST TOURNAMENT", 5, "Moscow",
-        LocalDate.parse("2023-12-12"),false)
+        LocalDateTime.parse("2023-12-12T03-00-00"),false)
 
     var Alaska = Player("Alaska", "Thousand Sons", 1, 2020 )
     var Ares = Player("Ares", "Drukhari", 2, 1902)

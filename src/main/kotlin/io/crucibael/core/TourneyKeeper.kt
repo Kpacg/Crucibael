@@ -1,15 +1,22 @@
 package io.crucibael.core
 
+import java.time.LocalTime
+
 //tourney keeper <-> tournament <-> players/teams
 class TourneyKeeper (val tournament: Tournament)
 {
-    private var currentRound:Round = Round(1)
-    private var currentRoundNumber:Int = 1
+    private var currentTour:Tour = Tour(1)
     private var isGoing = false
+
+    private fun currentTourNumber():Int
+    {
+        return currentTour.tourNumber
+    }
 }
 
-private data class Round (val roundNumber:Int)
+private data class Tour (val tourNumber:Int, val tourTime : LocalTime = LocalTime.of(3,0,0))
 {
+
 }
 
 
@@ -127,12 +134,7 @@ private data class Round (val roundNumber:Int)
     }
 }*/
 
-data class Meet (val player1: Player, val player2: Player, var result1:Int = 0, var result2:Int = 0)
-{
-    fun isEqual(otherMeet: Meet):Boolean =
-        ((player1.playerID == otherMeet.player2.playerID) && (player2.playerID == otherMeet.player1.playerID)) ||
-                ((player1.playerID == otherMeet.player1.playerID) && (player2.playerID == otherMeet.player2.playerID))
-}
+
 
 /*data class Team(var teamName: String, var teamCity : String) {
     private var teamPlayers = mutableListOf<Player>()

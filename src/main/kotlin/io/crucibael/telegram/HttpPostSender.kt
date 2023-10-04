@@ -1,4 +1,4 @@
-package io.crucibael.core
+package io.crucibael.telegram
 
 import mu.KotlinLogging
 import okhttp3.MediaType.Companion.toMediaType
